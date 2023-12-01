@@ -1,7 +1,5 @@
 from django.db import models
 from django.contrib.auth.models import User
-from .models import ITuser
-
 
 # Model of ITuser
 class ITuser(models.Model):
@@ -11,15 +9,6 @@ class ITuser(models.Model):
     class Meta:
         verbose_name_plural = 'ITuser'
 
-
-# Models of category with issues
-class Category(models.Model):
-    name = models.CharField(max_length=100)
-
-    def __str__(self):
-        return self.name
-    
-
 # Ticket model
 class Ticket(models.Model):
     STATUS_CHOICES = (
@@ -27,10 +16,23 @@ class Ticket(models.Model):
         ('In Progress', 'In Progress'),
         ('Completed', 'Completed'),
     )
+    STATUS_CHOICES2 = (
+        ('low', 'low'),
+        ('mid', 'mid'),
+        ('hight', 'hight'),
+    )
+    STATUS_CHOICES3 = (
+        ('Software', 'Software'),
+        ('Hardware', 'Hardware'),
+        ('Network', 'Network'),
+        ('Other', 'Other')
+    )
+
     title = models.CharField(max_length=100)
     description = models.TextField()
-    category = models.ForeignKey(Category, on_delete=models.CASCADE)
     status = models.CharField(max_length=100, choices=STATUS_CHOICES, default='Pending')
+    priority = models.CharField(max_length=100, choices=STATUS_CHOICES2, default='low')
+    request_type = models.CharField(max_length=100, choices=STATUS_CHOICES3, default='Software')
     created_at = models.DateTimeField(auto_now_add=True)
     assigned_to = models.ForeignKey(ITuser, on_delete=models.CASCADE, related_name='ticket_assigned_to', null=True, blank=True)
     updated_at = models.DateTimeField(auto_now=True)
@@ -41,5 +43,3 @@ class Ticket(models.Model):
 
     def __str__(self):
         return self.title
-    
-

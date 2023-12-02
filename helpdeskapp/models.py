@@ -12,6 +12,10 @@
         updated_at (datetime): The date and time when the ticket was last updated.
         created_by (User): The user who created the ticket.
     """
+
+    
+   
+    
 from django.db import models
 from django.contrib.auth.models import User
 

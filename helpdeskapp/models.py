@@ -13,12 +13,16 @@
         created_by (User): The user who created the ticket.
     """
 
-    
-   
-    
 from django.db import models
 from django.contrib.auth.models import User
+from django.urls import reverse
+from django.utils.text import slugify
 
+# new manager for published tickets
+class PublishedManager(models.Manager):
+    def get_queryset(self):
+        return super(PublishedManager, self).get_queryset().filter(status='Pending')
+    
 # Model of ITuser
 class ITuser(models.Model):
     user = models.OneToOneField(User, on_delete=models.CASCADE, related_name='ituser')
@@ -58,8 +62,24 @@ class Ticket(models.Model):
     updated_at = models.DateTimeField(auto_now=True)
     created_by = models.ForeignKey(User, on_delete=models.CASCADE, related_name='ticket_created_by')
     
+    objects = models.Manager() # default manager
+    published = PublishedManager() # custom manager
+
+    slug = models.SlugField(unique=True, default='default-slug')
+
+    def save(self, *args, **kwargs):
+        """
+        Overrides the save method to automatically generate a slug if it doesn't exist.
+        """
+        if not self.slug:
+            self.slug = slugify(self.title)
+        super().save(*args, **kwargs)
+
     class Meta:
         ordering = ['-created_at']
 
     def __str__(self):
         return self.title
+    
+    def get_absolute_url(self):
+        return reverse('helpdeskapp:ticket_detail', args=[self.slug])

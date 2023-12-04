@@ -1,0 +1,15 @@
+{% extends "helpdeskapp/base.html" %}
+
+{%block title%} {{ticket.title}} {%endblock%}
+
+{% block content %}
+     <h1>tytuł: {{ticket.title}}</h1>
+    <p>Opis: {{ticket.description}}</p>
+    <p>status: {{ticket.status}}</p>
+    <p>prioritet: {{ticket.priority}}</p>
+    <p>rodzaj problemu: {{ticket.request_type}}</p>
+    <p>stworzono przez: {{ticket.created_by}}</p>
+    <p>Stworzono ticket: {{ticket.created_at}}</p>
+    <p>Zaktualizowano: {{ticket.updated_at}}</p>
+    <p>Przypisany do: {{ticket.assigned_to}}</p>
+{% endblock %}

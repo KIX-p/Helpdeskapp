@@ -33,15 +33,6 @@ class ITuser(models.Model):
     class Meta:
         verbose_name_plural = 'ITuser'
 
-class DefaultUser(models.Model):
-    user = models.OneToOneField(User, on_delete=models.CASCADE, related_name='defaultuser')
-
-    def __str__(self):
-        return self.user.username
-    
-    class Meta:
-        verbose_name_plural = 'DefaultUser'
-
 # Ticket model
 class Ticket(models.Model):
     STATUS_CHOICES = (

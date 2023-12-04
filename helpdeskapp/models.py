@@ -33,6 +33,15 @@ class ITuser(models.Model):
     class Meta:
         verbose_name_plural = 'ITuser'
 
+class DefaultUser(models.Model):
+    user = models.OneToOneField(User, on_delete=models.CASCADE, related_name='defaultuser')
+
+    def __str__(self):
+        return self.user.username
+    
+    class Meta:
+        verbose_name_plural = 'DefaultUser'
+
 # Ticket model
 class Ticket(models.Model):
     STATUS_CHOICES = (
@@ -51,7 +60,6 @@ class Ticket(models.Model):
         ('Network', 'Network'),
         ('Other', 'Other')
     )
-
     title = models.CharField(max_length=100)
     description = models.TextField()
     status = models.CharField(max_length=100, choices=STATUS_CHOICES, default='Pending')
@@ -73,7 +81,11 @@ class Ticket(models.Model):
         """
         if not self.slug:
             self.slug = slugify(self.title)
-        super().save(*args, **kwargs)
+        while Ticket.objects.filter(slug=self.slug).exists():
+            self.slug = f"{self.slug}-2"
+        super().save(*args, **kwargs)   
+
+
 
     class Meta:
         ordering = ['-created_at']

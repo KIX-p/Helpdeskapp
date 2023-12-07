@@ -13,5 +13,5 @@
         <p>Stworzono przez: {{ticket.created_by}}</p>
         <p>Stworzono ticket: {{ticket.created_at}}</p>
     {%endfor%}
-    {%include "helpdeskapp/pagination.html" with page=page_obj %}
+    {%include "helpdeskapp/pagination.html" with page=tickets %}
 {% endblock %}

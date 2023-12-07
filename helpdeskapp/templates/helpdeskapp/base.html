@@ -3,9 +3,18 @@
 <html lang="pl">
 <head>
     <title>{% block title %} {% endblock %}</title>
-    <link rel="stylesheet" href="{% static 'css/helpdeskapp.css' %}">
+    <link href="{% static 'helpdeskapp/static/style.css' %}" rel="stylesheet">
 </head>
 <body>
+    {%if request.user.is_authenticated%}
+    <span class = "user">
+        {%if request.user.is_authenticated%}
+            Witaj {{request.user.username}}!
+            <a href="{% url 'helpdeskapp:logout' %}">Wyloguj</a>
+        {%else%}
+            <a href="{% url 'helpdeskapp:login' %}">Zaloguj</a>
+        {%endif%}
+    </span>
     <div class="container">
         <div class="header">
             <h1>Helpdesk (base.html)</h1>
@@ -21,3 +30,6 @@
             
         </div>
     </div>
+    {%endif%}
+    
+</body>

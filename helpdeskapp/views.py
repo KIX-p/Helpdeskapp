@@ -1,11 +1,11 @@
 from calendar import day_abbr
 from imaplib import _Authenticator
-from django.forms import SlugField
+from django.forms import SlugField, ValidationError
 from django.shortcuts import get_object_or_404, redirect, render
 from django.views.generic import ListView
 
 from helpdeskapp.admin import TicketAdmin
-from .forms import AddTicketForm, LoginForm 
+from .forms import AddTicketForm, LoginForm, RegisterForm 
 
 from django.contrib.auth import authenticate, login
 from django.http import HttpResponse
@@ -61,6 +61,39 @@ def user_login(request):
 class CustomLogoutView(LogoutView):
     next_page = reverse_lazy('helpdeskapp:login')
 
+def register(request):
+    """
+    View function for user registration.
+
+    This function handles the user registration process. It expects a POST request
+    containing the necessary user registration data. If the request method is POST,
+    it validates the form data and creates a new user account. If the registration
+    is successful, it redirects the user to a success page. If the registration fails,
+    it displays the registration form with appropriate error messages.
+
+    Args:
+        request (HttpRequest): The HTTP request object.
+
+    Returns:
+        HttpResponse: The HTTP response object.
+
+    Raises:
+        None
+    """
+    if request.method == 'POST':
+        form = RegisterForm(request.POST)
+        if form.is_valid():
+            cd = form.cleaned_data
+            if User.objects.filter(username=cd['username']).exists():
+                form.add_error('username', ValidationError("Nazwa użytkownika jest już zajęta."))
+            else:
+                user = User.objects.create_user(cd['username'],None,cd['password'])
+                user.save()
+                return redirect('helpdeskapp:login')
+    else:
+        form = RegisterForm()
+    return render(request, 'helpdeskapp/registration/register.html', {'form': form})
+
 @login_required
 def ticket_list(request):
     tickets = Ticket.published.all()
@@ -89,6 +122,9 @@ def ticket_add(request):
     else:
         form = AddTicketForm()
     return render(request, 'helpdeskapp/tickets/ticket_add.html', {'form': form})
+
+def main_view(request):
+    return render(request, 'helpdeskapp/main.html')
 
 
     

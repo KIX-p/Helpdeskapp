@@ -1,0 +1,15 @@
+{% block title %}{% endblock %}
+    {% block content %}
+        <h1>Zarejestruj się</h1>
+        <p>Wypełnij poniższy formularz, aby się zarejestrować:</p>
+        <form method="post">
+            {% csrf_token %}
+            <label for="username">Nazwa użytkownika:</label>
+            <input type="text" id="username" name="username" required>
+            <label for="password">Hasło:</label>
+            <input type="password" id="password" name="password" required>
+            <label for="password2">Potwierdź hasło:</label>
+            <input type="password" id="password2" name="password2" required>
+            <input type="submit" value="Zarejestruj się">
+        </form>
+    {% endblock %}

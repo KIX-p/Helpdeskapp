@@ -5,7 +5,7 @@ from django.shortcuts import get_object_or_404, redirect, render
 from django.views.generic import ListView
 
 from helpdeskapp.admin import TicketAdmin
-from .forms import AddTicketForm, LoginForm, RegisterForm 
+from .forms import AddTicketForm, EditTicketForm, LoginForm, RegisterForm 
 
 from django.contrib.auth import authenticate, login
 from django.http import HttpResponse
@@ -61,25 +61,13 @@ def user_login(request):
 class CustomLogoutView(LogoutView):
     next_page = reverse_lazy('helpdeskapp:login')
 
+from django.contrib.auth.models import User, Group
+from django.core.exceptions import ValidationError
+from django.shortcuts import render, redirect, get_object_or_404
+from .forms import EditTicketForm
+from .models import Ticket
+
 def register(request):
-    """
-    View function for user registration.
-
-    This function handles the user registration process. It expects a POST request
-    containing the necessary user registration data. If the request method is POST,
-    it validates the form data and creates a new user account. If the registration
-    is successful, it redirects the user to a success page. If the registration fails,
-    it displays the registration form with appropriate error messages.
-
-    Args:
-        request (HttpRequest): The HTTP request object.
-
-    Returns:
-        HttpResponse: The HTTP response object.
-
-    Raises:
-        None
-    """
     if request.method == 'POST':
         form = RegisterForm(request.POST)
         if form.is_valid():
@@ -87,7 +75,9 @@ def register(request):
             if User.objects.filter(username=cd['username']).exists():
                 form.add_error('username', ValidationError("Nazwa użytkownika jest już zajęta."))
             else:
-                user = User.objects.create_user(cd['username'],None,cd['password'])
+                user = User.objects.create_user(cd['username'], None, cd['password'])
+                default_group = Group.objects.get(name='Defaultuser')
+                user.groups.add(default_group)
                 user.save()
                 return redirect('helpdeskapp:login')
     else:
@@ -96,7 +86,7 @@ def register(request):
 
 @login_required
 def ticket_list(request):
-    tickets = Ticket.published.all()
+    tickets = Ticket.objects.all()
     paginator = Paginator(tickets, 5)
     page = request.GET.get('page')
     try:
@@ -117,14 +107,39 @@ def ticket_add(request):
         form = AddTicketForm(request.POST)
         if form.is_valid():
             ticket = form.save(commit=False)
-            ticket.created_by = User.objects.first()
+            ticket.created_by = request.user
             form.save()
+            return redirect('helpdeskapp:ticket_list')  
     else:
         form = AddTicketForm()
     return render(request, 'helpdeskapp/tickets/ticket_add.html', {'form': form})
 
+def ticket_edit(request, slug):
+    # Pobieramy ticket na podstawie sluga, jeśli nie istnieje, zwracamy stronę 404
+    ticket = get_object_or_404(Ticket, slug=slug)
+
+    # Sprawdzamy, czy metoda żądania to POST
+    if request.method == "POST":
+        # Tworzymy instancję formularza z danymi przesłanymi w żądaniu POST
+        form = EditTicketForm(request.POST, instance=ticket)
+
+        # Sprawdzamy, czy formularz jest prawidłowy
+        if form.is_valid():
+            # Zapisujemy zmiany w tickecie do bazy danych
+            ticket = form.save()
+
+            # Przekierowujemy użytkownika do strony szczegółów ticketu
+            return redirect('helpdeskapp:ticket_detail', slug=ticket.slug)
+    else:
+        # Jeśli metoda żądania to nie POST, tworzymy instancję formularza bez danych żądania POST
+        form = EditTicketForm(instance=ticket)
+
+    # Renderujemy szablon 'helpdeskapp/tickets/ticket_edit.html' z kontekstem, który zawiera formularz
+    return render(request, 'helpdeskapp/tickets/ticket_edit.html', {'form': form})
+
 def main_view(request):
     return render(request, 'helpdeskapp/main.html')
+
 
 
     

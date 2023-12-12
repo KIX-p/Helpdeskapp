@@ -23,16 +23,6 @@ class PublishedManager(models.Manager):
     def get_queryset(self):
         return super(PublishedManager, self).get_queryset().filter(status='Pending')
     
-# Model of ITuser
-class ITuser(models.Model):
-    user = models.OneToOneField(User, on_delete=models.CASCADE, related_name='ituser')
-    
-    def __str__(self):
-        return self.user.username
-    
-    class Meta:
-        verbose_name_plural = 'ITuser'
-
 # Ticket model
 class Ticket(models.Model):
     STATUS_CHOICES = (
@@ -57,7 +47,7 @@ class Ticket(models.Model):
     priority = models.CharField(max_length=100, choices=STATUS_CHOICES2, default='low')
     request_type = models.CharField(max_length=100, choices=STATUS_CHOICES3, default='Software')
     created_at = models.DateTimeField(auto_now_add=True)
-    assigned_to = models.ForeignKey(ITuser, on_delete=models.CASCADE, related_name='ticket_assigned_to', null=True, blank=True)
+    assigned_to = models.ForeignKey(User, on_delete=models.CASCADE, related_name='ticket_assigned_to', null=True, blank=True, default=None)
     updated_at = models.DateTimeField(auto_now=True)
     created_by = models.ForeignKey(User, on_delete=models.CASCADE, related_name='ticket_created_by')
     
@@ -70,16 +60,24 @@ class Ticket(models.Model):
         """
         Overrides the save method to automatically generate a slug if it doesn't exist.
         """
-        if not self.slug:
+        if not self.id:
             self.slug = slugify(self.title)
-        while Ticket.objects.filter(slug=self.slug).exists():
-            self.slug = f"{self.slug}-2"
-        super().save(*args, **kwargs)   
+            counter = 2
+            while Ticket.objects.filter(slug=self.slug).exists():
+                self.slug = f"{slugify(self.title)}-{counter}"
+                counter += 1
+        super().save(*args, **kwargs)
 
 
 
     class Meta:
         ordering = ['-created_at']
+        permissions = [
+            ('can_change_status', 'Can change status'),
+            ('can_change_priority', 'Can change priority'),
+            ('can_change_request_type', 'Can change request type'),
+            ('can_change_assigned_to', 'Can change assigned to'),
+        ]
 
     def __str__(self):
         return self.title

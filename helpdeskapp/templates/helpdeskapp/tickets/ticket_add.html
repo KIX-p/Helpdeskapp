@@ -1,15 +1,13 @@
-{% extends "helpdeskapp/base.html" %}
-
 {%block title%} dodaj zgłoszenie {%endblock%}
 
 {% block content %}
 {%if sent %}
     <h1> Zgłoszenie zostało dodane</h1>
 {%else%}
-    <form action="." method="post">
-        {{form.as_p}}
-        {% csrf_token %}
-        <input type="submit" value="Dodaj zgłoszenie">
-    </form>
+<form method="post">
+    {% csrf_token %}
+    {{ form.as_p }}
+    <input type="submit" value="Dodaj zgłoszenie">
+</form>
 {%endif%}
 {% endblock %}

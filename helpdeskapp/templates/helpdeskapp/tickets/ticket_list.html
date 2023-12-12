@@ -8,10 +8,11 @@
     {% for ticket in tickets%}
         <h2><a href="{{ticket.get_absolute_url}}">Tytuł:{{ticket.title}}</h2></a>
         <p>status:{{ticket.status}}</p>
-         <p>prioritet: {{ticket.priority}}</p>
+        <p>prioritet: {{ticket.priority}}</p>
         <p>rodzaj problemu: {{ticket.request_type}}</p>
         <p>Stworzono przez: {{ticket.created_by}}</p>
         <p>Stworzono ticket: {{ticket.created_at}}</p>
+        <p><a href="{% url 'helpdeskapp:ticket_edit' ticket.slug %}">Edytuj ticket</a></p>
     {%endfor%}
     {%include "helpdeskapp/pagination.html" with page=tickets %}
 {% endblock %}

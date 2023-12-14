@@ -23,7 +23,15 @@ from django.contrib.auth.decorators import login_required
 
 from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
 
+from django.contrib.auth.models import User, Group
+from django.core.exceptions import ValidationError
+from django.shortcuts import render, redirect, get_object_or_404
+from .forms import EditTicketForm
+from .models import Ticket
 
+from django.shortcuts import render
+from django.contrib.auth.models import Group
+from django.http import HttpResponse
 # Create your views here.
 
 """
@@ -61,11 +69,7 @@ def user_login(request):
 class CustomLogoutView(LogoutView):
     next_page = reverse_lazy('helpdeskapp:login')
 
-from django.contrib.auth.models import User, Group
-from django.core.exceptions import ValidationError
-from django.shortcuts import render, redirect, get_object_or_404
-from .forms import EditTicketForm
-from .models import Ticket
+
 
 def register(request):
     if request.method == 'POST':
@@ -84,9 +88,13 @@ def register(request):
         form = RegisterForm()
     return render(request, 'helpdeskapp/registration/register.html', {'form': form})
 
+
 @login_required
 def ticket_list(request):
-    tickets = Ticket.objects.all()
+    if request.user.groups.filter(name='Defaultuser').exists():
+        tickets = Ticket.objects.filter(created_by=request.user)
+    else:
+        tickets = Ticket.objects.all()
     paginator = Paginator(tickets, 5)
     page = request.GET.get('page')
     try:
@@ -136,6 +144,11 @@ def ticket_edit(request, slug):
 
     # Renderujemy szablon 'helpdeskapp/tickets/ticket_edit.html' z kontekstem, który zawiera formularz
     return render(request, 'helpdeskapp/tickets/ticket_edit.html', {'form': form})
+
+def ticket_delete(request, slug):
+    ticket = get_object_or_404(Ticket, slug=slug)
+    ticket.delete()
+    return redirect('helpdeskapp:ticket_list')
 
 def main_view(request):
     return render(request, 'helpdeskapp/main.html')

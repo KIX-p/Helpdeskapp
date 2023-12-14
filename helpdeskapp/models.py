@@ -50,6 +50,7 @@ class Ticket(models.Model):
     assigned_to = models.ForeignKey(User, on_delete=models.CASCADE, related_name='ticket_assigned_to', null=True, blank=True, default=None)
     updated_at = models.DateTimeField(auto_now=True)
     created_by = models.ForeignKey(User, on_delete=models.CASCADE, related_name='ticket_created_by')
+    closed_at = models.DateTimeField(null=True, blank=True, default=None)
     
     objects = models.Manager() # default manager
     published = PublishedManager() # custom manager
@@ -73,10 +74,9 @@ class Ticket(models.Model):
     class Meta:
         ordering = ['-created_at']
         permissions = [
-            ('can_change_status', 'Can change status'),
-            ('can_change_priority', 'Can change priority'),
-            ('can_change_request_type', 'Can change request type'),
-            ('can_change_assigned_to', 'Can change assigned to'),
+            ('can_change_status', 'Can change status'),#Ituser
+            ('can_change_priority', 'Can change priority'),#Ituser
+            
         ]
 
     def __str__(self):

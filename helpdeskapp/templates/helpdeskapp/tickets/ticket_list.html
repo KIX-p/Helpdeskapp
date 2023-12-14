@@ -13,6 +13,7 @@
         <p>Stworzono przez: {{ticket.created_by}}</p>
         <p>Stworzono ticket: {{ticket.created_at}}</p>
         <p><a href="{% url 'helpdeskapp:ticket_edit' ticket.slug %}">Edytuj ticket</a></p>
+        <p><a href="{% url 'helpdeskapp:ticket_delete' ticket.slug %}">Usuń ticket</a></p>
     {%endfor%}
     {%include "helpdeskapp/pagination.html" with page=tickets %}
 {% endblock %}

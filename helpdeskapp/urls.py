@@ -15,6 +15,8 @@ urlpatterns = [
     path('ticket/detail/<slug:slug>/', views.ticket_detail, name='ticket_detail'),
     path('ticket/add/', views.ticket_add, name='ticket_add'),
     path('ticket/edit/<slug:slug>/', views.ticket_edit, name='ticket_edit'),
+    path('ticket/delete/<slug:slug>/', views.ticket_delete, name='ticket_delete'),
+    
    
 
     

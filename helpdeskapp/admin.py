@@ -1,9 +1,6 @@
 from .models import User, Ticket
 from django.contrib import admin
 
-
-
-
 @admin.register(Ticket)
 class TicketAdmin(admin.ModelAdmin):
     list_display = ['title', 'status', 'priority', 'request_type', 'created_at', 'assigned_to', 'updated_at', 'created_by']

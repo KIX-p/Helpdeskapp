@@ -10,6 +10,8 @@
     <span class = "user">
         {%if request.user.is_authenticated%}
             Witaj {{request.user.username}}!
+            <br>
+            Użytkownik: {{request.user.groups.all.0}}
             <a href="{% url 'helpdeskapp:logout' %}">Wyloguj</a>
         {%else%}
             <a href="{% url 'helpdeskapp:login' %}">Zaloguj</a>

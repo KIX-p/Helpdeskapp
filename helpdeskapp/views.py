@@ -1,50 +1,21 @@
-from calendar import day_abbr
-from imaplib import _Authenticator
-from django.forms import SlugField, ValidationError
-from django.shortcuts import get_object_or_404, redirect, render
-from django.views.generic import ListView
-
-from helpdeskapp.admin import TicketAdmin
-from .forms import AddTicketForm, EditTicketForm, LoginForm, RegisterForm 
-
+from itertools import chain
 from django.contrib.auth import authenticate, login
-from django.http import HttpResponse
-
-
-from helpdeskapp.models import Ticket
-from django.contrib.auth.models import User
-
-from django.contrib.auth.views import LoginView
-
-from django.contrib.auth.views import LogoutView
-from django.urls import reverse_lazy
-
 from django.contrib.auth.decorators import login_required
-
-from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
-
-from django.contrib.auth.models import User, Group
+from django.contrib.auth.models import Group, User
+from django.contrib.auth.views import LogoutView
 from django.core.exceptions import ValidationError
-from django.shortcuts import render, redirect, get_object_or_404
-from .forms import EditTicketForm
+from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
+from django.http import HttpResponse
+from django.shortcuts import get_object_or_404, redirect, render
+from django.urls import reverse_lazy
+from django.contrib import messages
+from django.db.models import Q
+
+
+from .forms import AddTicketForm, EditTicketForm, LoginForm, RegisterForm
 from .models import Ticket
 
-from django.shortcuts import render
-from django.contrib.auth.models import Group
-from django.http import HttpResponse
-# Create your views here.
 
-"""
-    View function for user login.
-
-    This function handles the login form submission and authenticates the user.
-    If the user is authenticated and active, it logs them in and redirects to the ticket list page.
-    If the user is authenticated but not active, it returns an HttpResponse indicating that the account is blocked.
-    If the user is not authenticated, it returns an HttpResponse indicating that the credentials are invalid.
-
-    :param request: The HTTP request object.
-    :return: The HTTP response object.
-    """
 def user_login(request):
     if request.method == 'POST':
         form = LoginForm(request.POST)
@@ -65,10 +36,8 @@ def user_login(request):
     return render(request, 'helpdeskapp/registration/login.html', {'form': form})
 
 
-
 class CustomLogoutView(LogoutView):
     next_page = reverse_lazy('helpdeskapp:login')
-
 
 
 def register(request):
@@ -94,7 +63,9 @@ def ticket_list(request):
     if request.user.groups.filter(name='Defaultuser').exists():
         tickets = Ticket.objects.filter(created_by=request.user)
     else:
-        tickets = Ticket.objects.all()
+        tickets = Ticket.objects.filter(Q(assigned_to=request.user) | Q(assigned_to=None))
+    paginator = Paginator(tickets, 5)
+    page = request.GET.get('page')
     paginator = Paginator(tickets, 5)
     page = request.GET.get('page')
     try:
@@ -103,12 +74,13 @@ def ticket_list(request):
         tickets = paginator.page(1)
     except EmptyPage:
         tickets = paginator.page(paginator.num_pages)
-    return render(request, 'helpdeskapp/tickets/ticket_list.html', {'page': page, 'tickets': tickets})
+    return render(request, 'helpdeskapp/tickets/ticket_list.html', {'page': page ,'tickets': tickets})
 
 
 def ticket_detail(request, slug):
     ticket = get_object_or_404(Ticket, slug=slug)
     return render(request, 'helpdeskapp/tickets/ticket_detail.html', {'ticket': ticket})
+
 
 def ticket_add(request):
     if request.method == 'POST':
@@ -122,37 +94,34 @@ def ticket_add(request):
         form = AddTicketForm()
     return render(request, 'helpdeskapp/tickets/ticket_add.html', {'form': form})
 
+
 def ticket_edit(request, slug):
-    # Pobieramy ticket na podstawie sluga, jeśli nie istnieje, zwracamy stronę 404
     ticket = get_object_or_404(Ticket, slug=slug)
-
-    # Sprawdzamy, czy metoda żądania to POST
     if request.method == "POST":
-        # Tworzymy instancję formularza z danymi przesłanymi w żądaniu POST
         form = EditTicketForm(request.POST, instance=ticket)
-
-        # Sprawdzamy, czy formularz jest prawidłowy
         if form.is_valid():
-            # Zapisujemy zmiany w tickecie do bazy danych
             ticket = form.save()
-
-            # Przekierowujemy użytkownika do strony szczegółów ticketu
             return redirect('helpdeskapp:ticket_detail', slug=ticket.slug)
     else:
-        # Jeśli metoda żądania to nie POST, tworzymy instancję formularza bez danych żądania POST
         form = EditTicketForm(instance=ticket)
-
-    # Renderujemy szablon 'helpdeskapp/tickets/ticket_edit.html' z kontekstem, który zawiera formularz
     return render(request, 'helpdeskapp/tickets/ticket_edit.html', {'form': form})
+
 
 def ticket_delete(request, slug):
     ticket = get_object_or_404(Ticket, slug=slug)
     ticket.delete()
     return redirect('helpdeskapp:ticket_list')
 
+def assigned_to(request, slug):
+    ticket = get_object_or_404(Ticket, slug=slug)
+    if ticket.assigned_to:
+        return HttpResponse('Zgłoszenie jest już przypisane')
+    if request.user.groups.filter(name='Defaultuser').exists():
+        return HttpResponse('Nie masz uprawnień do przypisania zgłoszenia')
+    else:
+        ticket.assigned_to = request.user
+        ticket.save()
+    return redirect('helpdeskapp:ticket_detail', slug=ticket.slug)
+
 def main_view(request):
     return render(request, 'helpdeskapp/main.html')
-
-
-
-    

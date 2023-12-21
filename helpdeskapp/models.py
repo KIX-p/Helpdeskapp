@@ -1,29 +1,26 @@
-"""
+from django.db import models
+from django.contrib.auth.models import User
+from django.urls import reverse
+from django.utils.text import slugify
+    
+# Ticket model
+class Ticket(models.Model):
+    """
     Represents a ticket in the helpdesk system.
 
     Attributes:
         title (str): The title of the ticket.
         description (str): The description of the ticket.
-        status (str): The status of the ticket. Can be one of 'Pending', 'In Progress', or 'Completed'.
-        priority (str): The priority of the ticket. Can be one of 'low', 'mid', or 'high'.
-        request_type (str): The type of request for the ticket. Can be one of 'Software', 'Hardware', 'Network', or 'Other'.
+        status (str): The status of the ticket. Choices are 'Pending', 'In Progress', or 'Completed'.
+        priority (str): The priority of the ticket. Choices are 'low', 'mid', or 'high'.
+        request_type (str): The type of request for the ticket. Choices are 'Software', 'Hardware', 'Network', or 'Other'.
         created_at (datetime): The date and time when the ticket was created.
-        assigned_to (ITuser): The IT user assigned to the ticket.
+        assigned_to (User): The user assigned to the ticket.
         updated_at (datetime): The date and time when the ticket was last updated.
         created_by (User): The user who created the ticket.
+        closed_at (datetime): The date and time when the ticket was closed.
+        slug (str): The slugified version of the ticket title, used for generating a unique URL.
     """
-
-from django.db import models
-from django.contrib.auth.models import User
-from django.urls import reverse
-from django.utils.text import slugify
-
-# new manager for published tickets
-class PublishedManager(models.Manager):
-    def get_queryset(self):
-        return super(PublishedManager, self).get_queryset().filter(status='Pending')
-    
-# Ticket model
 class Ticket(models.Model):
     STATUS_CHOICES = (
         ('Pending', 'Pending'),
@@ -53,7 +50,6 @@ class Ticket(models.Model):
     closed_at = models.DateTimeField(null=True, blank=True, default=None)
     
     objects = models.Manager() # default manager
-    published = PublishedManager() # custom manager
 
     slug = models.SlugField(unique=True, default='default-slug')
 
@@ -76,9 +72,8 @@ class Ticket(models.Model):
         permissions = [
             ('can_change_status', 'Can change status'),#Ituser
             ('can_change_priority', 'Can change priority'),#Ituser
-            
         ]
-
+    
     def __str__(self):
         return self.title
     

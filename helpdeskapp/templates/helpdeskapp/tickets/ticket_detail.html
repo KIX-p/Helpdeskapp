@@ -12,5 +12,8 @@
     <p>Stworzono ticket: {{ticket.created_at}}</p>
     <p>Zaktualizowano: {{ticket.updated_at}}</p>
     <p>Przypisany do: {{ticket.assigned_to}}</p>
+    <p><a href="{% url 'helpdeskapp:assigned_to' ticket.slug %}">Przypisz do mnie</a></p>
     <a href = "{% url 'helpdeskapp:ticket_list' %}">Powrót do listy ticketów</a>
+    <p><a href="{% url 'helpdeskapp:ticket_edit' ticket.slug %}">Edytuj ticket</a></p>
+    <p><a href="{% url 'helpdeskapp:ticket_delete' ticket.slug %}">Usuń ticket</a></p>
 {% endblock %}

@@ -1,11 +1,17 @@
 {% extends "helpdeskapp/base.html" %}
-
 {%block title%} Tickety {%endblock%}
-
 {% block content %}
+<div class="header">
     <h1>Tickety</h1>
     <p>Witaj w systemie Tickety</p>
-    <h1>Lista przypisanych do ciebie ticketów</h1>
+    <a href="{% url 'helpdeskapp:ticket_add' %}" class = "btn btn-primary">Stwórz nowe zgłoszenie</a>
+</div>
+{% for message in messages %}
+    <div class="alert alert-{{ message.tags }}">
+        {{ message }}
+    </div>
+{% endfor %}
+    <h1>Lista przypisanych i nie przypisanych do ciebie ticketów</h1>
     {% for ticket in tickets%}
         <h2><a href="{{ticket.get_absolute_url}}">Tytuł:{{ticket.title}}</h2></a>
         <p>status:{{ticket.status}}</p>
@@ -13,6 +19,7 @@
         <p>rodzaj problemu: {{ticket.request_type}}</p>
         <p>Stworzono przez: {{ticket.created_by}}</p>
         <p>Stworzono ticket: {{ticket.created_at}}</p>
+        <p>Przypisany do: {{ticket.assigned_to}}</p>
     {%endfor%}
     {%include "helpdeskapp/pagination.html" with page=tickets %}
 {% endblock %}

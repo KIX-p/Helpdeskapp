@@ -1,4 +1,9 @@
-{% block title %}{% endblock %}
+{%load static %}
+<head>
+    <title>{% block title %} {% endblock %}</title>
+    <link href="{% static 'helpdeskapp/static/style.css' %}" rel="stylesheet">
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/css/bootstrap.min.css">
+</head>
 {% block content %}
     <h1>Zarejestruj się</h1>
     <p>Wypełnij poniższy formularz, aby się zarejestrować:</p>

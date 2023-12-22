@@ -5,8 +5,9 @@ from django.contrib.auth.models import Group, User
 from django.contrib.auth.views import LogoutView
 from django.core.exceptions import ValidationError
 from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
-from django.http import HttpResponse
+from django.http import HttpRequest, HttpResponse
 from django.shortcuts import get_object_or_404, redirect, render
+from django.template import RequestContext
 from django.urls import reverse_lazy
 from django.contrib import messages
 from django.db.models import Q
@@ -26,11 +27,13 @@ def user_login(request):
             if user is not None:
                 if user.is_active:
                     login(request, user)
+                    messages.success(request, 'Zalogowano pomyślnie.')
                     return redirect('helpdeskapp:ticket_list')
                 else:
-                    return HttpResponse('konto jest zablokowane')
+                    messages.error(request, 'Konto jest zablokowane.')
             else:
-                return HttpResponse('Nieprawidlowe dane uwierzytelniajace')
+                messages.warning(request, 'Nieprawidłowe dane logowania.')
+                
     else:
         form = LoginForm()
     return render(request, 'helpdeskapp/registration/login.html', {'form': form})
@@ -38,6 +41,7 @@ def user_login(request):
 
 class CustomLogoutView(LogoutView):
     next_page = reverse_lazy('helpdeskapp:login')
+    
 
 
 def register(request):
@@ -46,12 +50,13 @@ def register(request):
         if form.is_valid():
             cd = form.cleaned_data
             if User.objects.filter(username=cd['username']).exists():
-                form.add_error('username', ValidationError("Nazwa użytkownika jest już zajęta."))
+                messages.warning(request, 'Użytkownik o podanej nazwie już istnieje.')
             else:
                 user = User.objects.create_user(cd['username'], None, cd['password'])
                 default_group = Group.objects.get(name='Defaultuser')
                 user.groups.add(default_group)
                 user.save()
+                messages.success(request, 'Konto zostało utworzone.')
                 return redirect('helpdeskapp:login')
     else:
         form = RegisterForm()
@@ -62,8 +67,12 @@ def register(request):
 def ticket_list(request):
     if request.user.groups.filter(name='Defaultuser').exists():
         tickets = Ticket.objects.filter(created_by=request.user)
+        if not tickets:
+            messages.warning(request, 'Brak zgłoszeń.')
     else:
         tickets = Ticket.objects.filter(Q(assigned_to=request.user) | Q(assigned_to=None))
+        if not tickets:
+            messages.warning(request, 'Brak zgłoszeń.')
     paginator = Paginator(tickets, 5)
     page = request.GET.get('page')
     paginator = Paginator(tickets, 5)
@@ -89,6 +98,7 @@ def ticket_add(request):
             ticket = form.save(commit=False)
             ticket.created_by = request.user
             form.save()
+            messages.success(request, 'Zgłoszenie zostało dodane.')
             return redirect('helpdeskapp:ticket_list')  
     else:
         form = AddTicketForm()
@@ -101,6 +111,7 @@ def ticket_edit(request, slug):
         form = EditTicketForm(request.POST, instance=ticket)
         if form.is_valid():
             ticket = form.save()
+            messages.success(request, 'Zgłoszenie zostało zmienione.')
             return redirect('helpdeskapp:ticket_detail', slug=ticket.slug)
     else:
         form = EditTicketForm(instance=ticket)
@@ -110,17 +121,19 @@ def ticket_edit(request, slug):
 def ticket_delete(request, slug):
     ticket = get_object_or_404(Ticket, slug=slug)
     ticket.delete()
+    messages.success(request, 'Zgłoszenie zostało usunięte.')
     return redirect('helpdeskapp:ticket_list')
 
 def assigned_to(request, slug):
     ticket = get_object_or_404(Ticket, slug=slug)
     if ticket.assigned_to:
-        return HttpResponse('Zgłoszenie jest już przypisane')
+        messages.warning(request, 'Zgłoszenie jest już przypisane.')
     if request.user.groups.filter(name='Defaultuser').exists():
-        return HttpResponse('Nie masz uprawnień do przypisania zgłoszenia')
+        messages.warning(request, 'Nie masz uprawnień do przypisania zgłoszenia.')
     else:
         ticket.assigned_to = request.user
         ticket.save()
+        messages.success(request, 'Zgłoszenie zostało przypisane.')
     return redirect('helpdeskapp:ticket_detail', slug=ticket.slug)
 
 def main_view(request):

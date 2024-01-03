@@ -135,5 +135,3 @@ def assigned_to(request, slug):
         messages.success(request, 'Zgłoszenie zostało przypisane.')
     return redirect('helpdeskapp:ticket_detail', slug=ticket.slug)
 
-def main_view(request):
-    return render(request, 'helpdeskapp/main.html')

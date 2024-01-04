@@ -7,15 +7,12 @@ app_name = 'helpdeskapp'
 
 urlpatterns = [
     #tickets views
-<<<<<<< HEAD
     path('', views.user_login, name='login'),
     path('ticket_list/', views.ticket_list, name='ticket_list'),
     path('logout/', views.CustomLogoutView.as_view(), name='logout'),
-=======
     path('ticket_list/', views.ticket_list, name='ticket_list'),
     path('logout/', views.CustomLogoutView.as_view(), name='logout'),
     path('', views.user_login, name='login'),
->>>>>>> ed17ce7feefbb2b27454ad4115762739d6fdfd36
     path('register/', views.register, name='register'),
     path('ticket/detail/<slug:slug>/', views.ticket_detail, name='ticket_detail'),
     path('ticket/add/', views.ticket_add, name='ticket_add'),

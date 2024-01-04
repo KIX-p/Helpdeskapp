@@ -48,7 +48,7 @@ def register(request):
                 messages.warning(request, 'Nazwa użytkownika musi zawierać od 4 do 12 znaków.')
             elif " " in cd['username']:
                 messages.warning(request, 'Nazwa użytkownika nie może zawierać spacji.')
-            if len(cd['password']) < 8:
+            elif len(cd['password']) < 8:
                 messages.warning(request, 'Hasło musi zawierać co najmniej 8 znaków.')
             elif cd['password'] != cd['password2']:
                 messages.warning(request, 'Hasła nie są identyczne.')

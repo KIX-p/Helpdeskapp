@@ -136,4 +136,9 @@ def assigned_to(request, slug):
         ticket.assigned_to = request.user
         ticket.save()
         messages.success(request, 'Zgłoszenie zostało przypisane.')
+<<<<<<< HEAD
     return redirect('helpdeskapp:ticket_detail', slug=ticket.slug)
+=======
+    return redirect('helpdeskapp:ticket_detail', slug=ticket.slug)
+
+>>>>>>> ed17ce7feefbb2b27454ad4115762739d6fdfd36

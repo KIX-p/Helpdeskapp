@@ -20,4 +20,9 @@ from django.urls import include, path
 urlpatterns = [
     path('admin/', admin.site.urls),
     path('', include('helpdeskapp.urls', namespace='helpdeskapp')),
+<<<<<<< HEAD
+=======
+    #path('', include('helpdeskapp.urls', namespace='helpdeskapp')),
+    
+>>>>>>> ed17ce7feefbb2b27454ad4115762739d6fdfd36
 ]

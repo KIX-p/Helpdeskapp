@@ -11,7 +11,7 @@
         {{ message }}
     </div>
 {% endfor %}
-    <h1>Lista przypisanych i nie przypisanych do ciebie ticketów</h1>
+    <h1>Lista ticketów</h1>
     {% for ticket in tickets%}
         <h2><a href="{{ticket.get_absolute_url}}">Tytuł:{{ticket.title}}</h2></a>
         <p>status:{{ticket.status}}</p>

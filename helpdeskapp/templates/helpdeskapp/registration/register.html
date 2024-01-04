@@ -5,6 +5,11 @@
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/css/bootstrap.min.css">
 </head>
 {% block content %}
+{% for message in messages %}
+    <div class="alert alert-{{ message.tags }}">
+        {{ message }}
+    </div>
+{% endfor %}
     <h1>Zarejestruj się</h1>
     <p>Wypełnij poniższy formularz, aby się zarejestrować:</p>
     <form method="post">

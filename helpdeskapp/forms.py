@@ -1,13 +1,13 @@
 from django import forms
-
+from django.contrib.auth.models import User
 from helpdeskapp.models import Ticket
 
 
 class AddTicketForm(forms.ModelForm):
     title = forms.CharField(max_length=100)
     description = forms.CharField(widget=forms.Textarea)
-    priority = forms.ChoiceField(choices=Ticket.STATUS_CHOICES2)
-    request_type = forms.ChoiceField(choices=Ticket.STATUS_CHOICES3)
+    priority = forms.ChoiceField(choices=Ticket.prioritylist)
+    request_type = forms.ChoiceField(choices=Ticket.request_typelist)
     
     class Meta:
         model = Ticket
@@ -16,9 +16,9 @@ class AddTicketForm(forms.ModelForm):
 class EditTicketForm(forms.ModelForm):
     title = forms.CharField(max_length=100)
     description = forms.CharField(widget=forms.Textarea)
-    priority = forms.ChoiceField(choices=Ticket.STATUS_CHOICES2)
-    request_type = forms.ChoiceField(choices=Ticket.STATUS_CHOICES3)
-    status = forms.ChoiceField(choices=Ticket.STATUS_CHOICES)
+    priority = forms.ChoiceField(choices=Ticket.prioritylist)
+    request_type = forms.ChoiceField(choices=Ticket.request_typelist)
+    status = forms.ChoiceField(choices=Ticket.statuslist)
 
     class Meta:
         model = Ticket
@@ -34,8 +34,3 @@ class RegisterForm(forms.Form):
     password2 = forms.CharField(widget=forms.PasswordInput)
     default_group = forms.ChoiceField(choices=[('Defaultuser', 'Defaultuser')], widget=forms.HiddenInput, required=False)
 
-    def clean_password2(self):
-        cd = self.cleaned_data
-        if cd['password'] != cd['password2']:
-            raise forms.ValidationError('hasla nie sa identyczne')
-        return cd['password2']

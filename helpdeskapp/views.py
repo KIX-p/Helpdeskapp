@@ -11,8 +11,6 @@ from django.template import RequestContext
 from django.urls import reverse_lazy
 from django.contrib import messages
 from django.db.models import Q
-
-
 from .forms import AddTicketForm, EditTicketForm, LoginForm, RegisterForm
 from .models import Ticket
 
@@ -32,7 +30,6 @@ def user_login(request):
                     messages.error(request, 'Konto jest zablokowane.')
             else:
                 messages.warning(request, 'Nieprawidłowe dane logowania.')
-                
     else:
         form = LoginForm()
     return render(request, 'helpdeskapp/registration/login.html', {'form': form})
@@ -40,7 +37,6 @@ def user_login(request):
 
 class CustomLogoutView(LogoutView):
     next_page = reverse_lazy('helpdeskapp:login')
-    
 
 
 def register(request):
@@ -48,7 +44,15 @@ def register(request):
         form = RegisterForm(request.POST)
         if form.is_valid():
             cd = form.cleaned_data
-            if User.objects.filter(username=cd['username']).exists():
+            if len(cd['username']) > 12 or len(cd['username']) < 4:
+                messages.warning(request, 'Nazwa użytkownika musi zawierać od 4 do 12 znaków.')
+            elif " " in cd['username']:
+                messages.warning(request, 'Nazwa użytkownika nie może zawierać spacji.')
+            if len(cd['password']) < 8:
+                messages.warning(request, 'Hasło musi zawierać co najmniej 8 znaków.')
+            elif cd['password'] != cd['password2']:
+                messages.warning(request, 'Hasła nie są identyczne.')
+            elif User.objects.filter(username=cd['username']).exists():
                 messages.warning(request, 'Użytkownik o podanej nazwie już istnieje.')
             else:
                 user = User.objects.create_user(cd['username'], None, cd['password'])
@@ -72,8 +76,6 @@ def ticket_list(request):
         tickets = Ticket.objects.filter(Q(assigned_to=request.user) | Q(assigned_to=None))
         if not tickets:
             messages.warning(request, 'Brak zgłoszeń.')
-    paginator = Paginator(tickets, 5)
-    page = request.GET.get('page')
     paginator = Paginator(tickets, 5)
     page = request.GET.get('page')
     try:
@@ -123,6 +125,7 @@ def ticket_delete(request, slug):
     messages.success(request, 'Zgłoszenie zostało usunięte.')
     return redirect('helpdeskapp:ticket_list')
 
+
 def assigned_to(request, slug):
     ticket = get_object_or_404(Ticket, slug=slug)
     if ticket.assigned_to:
@@ -134,6 +137,3 @@ def assigned_to(request, slug):
         ticket.save()
         messages.success(request, 'Zgłoszenie zostało przypisane.')
     return redirect('helpdeskapp:ticket_detail', slug=ticket.slug)
-
-def main_view(request):
-    return render(request, 'helpdeskapp/main.html')

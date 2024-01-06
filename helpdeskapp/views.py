@@ -55,7 +55,7 @@ def register(request):
             elif User.objects.filter(username=cd['username']).exists():
                 messages.warning(request, 'Użytkownik o podanej nazwie już istnieje.')
             else:
-                user = User.objects.create_user(cd['username'], None, cd['password'])
+                user = User.objects.create_user(cd['username'], cd['email'], cd['password'])
                 default_group = Group.objects.get(name='Defaultuser')
                 user.groups.add(default_group)
                 user.save()

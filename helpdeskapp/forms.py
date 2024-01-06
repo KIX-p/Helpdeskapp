@@ -30,6 +30,7 @@ class LoginForm(forms.Form):
 
 class RegisterForm(forms.Form):
     username = forms.CharField(max_length=100)
+    email = forms.EmailField()
     password = forms.CharField(widget=forms.PasswordInput)
     password2 = forms.CharField(widget=forms.PasswordInput)
     default_group = forms.ChoiceField(choices=[('Defaultuser', 'Defaultuser')], widget=forms.HiddenInput, required=False)

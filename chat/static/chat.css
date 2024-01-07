@@ -1,54 +1,125 @@
+/* Styl dla obszaru czatu */
+body {
+  background-color: #424040;
+  font-family: sans-serif;
+}
 #chat {
-    max-height: 300px;
+    padding: 20px;
+    width: 80%;
+    background: linear-gradient(135deg, rgba(255, 255, 255, 0.1), rgba(255, 255, 255, 0));
+    backdrop-filter: blur(10px);
+    -webkit-backdrop-filter: blur(10px);
+    border-radius: 20px;
+    border: 1px solid rgba(255, 255, 255, 0.18);
+    box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.37);
+    margin: 20px;
+    margin-left: 30px;
     overflow-y: scroll;
-    border: 1px solid #ccc;
-    padding: 10px;
-    margin-bottom: 20px;
-  }
-  
-  .message {
-    margin-bottom: 10px;
-    padding: 10px;
-    border-radius: 5px;
-  }
-  
-  .message strong {
-    color: #007bff; /* колір для імені користувача */
-  }
-  
-  .message.Ja {
-    background-color: #007bff; /* колір для ваших повідомлень */
-    color: #fff; /* колір тексту для ваших повідомлень */
-  }
-  
-  .message.On {
-    background-color: #f0f0f0; /* колір для повідомлень інших користувачів */
-  }
-  
-  #chat-input {
-    margin-top: 20px;
-  }
-  
-  #chat-message-input {
-    width: 70%;
-    padding: 8px;
-  }
-  
-  #chat-message-submit {
-    width: 28%;
-    padding: 8px;
-    margin-left: 2%;
-  }
-  
-  .notification {
-    background-color: #f8f9fa; /* колір фону повідомлень у сповіщеннях */
-    border: 1px solid #ccc;
-    margin-bottom: 10px;
-    padding: 10px;
-    border-radius: 5px;
-  }
-  
-  .date {
-    color: #6c757d; /* колір тексту для дати */
-  }
-  
+    max-height: 800px;
+}
+
+h1{
+  color: #fff;
+  font-size: 20px;
+}
+
+/* Styl dla obszaru wprowadzania tekstu */
+#chat-input {
+    margin-top: 10px;
+    background-color: rgba(255, 255, 255, 0.18);
+    height: 50px;
+    text-align: center;
+}
+
+/* Styl dla pola wprowadzania tekstu */
+#chat-message-input {
+  flex-grow: 1;
+  padding: 10px;
+  background-color: #7d7c7c;
+  border: 2px solid #d3d3d3;
+  border-radius: 7px;
+  border: none;
+  margin-right: 10px;
+  width: 70%;
+  margin: 10px;
+  float: left;
+}
+
+/* Styl dla przycisku wysyłania */
+#chat-message-submit {
+  padding: 10px 20px;
+  border: none;
+  background-color: #007bff;
+  color: #fff;
+  border-radius: 5px;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+}
+
+#chat-message-submit:hover {
+  background-color: #0056b3;
+}
+
+/* Styl dla wiadomości od użytkownika */
+.message.Ja {
+  background-color: #d9d9d9;
+  padding: 10px;
+  margin: 10px 0;
+  border-radius: 5px;
+  position: relative;
+}
+
+.message.Ja::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  right: -10px;
+  border: 10px solid transparent;
+  border-left-color: #d9d9d9;
+}
+
+/* Styl dla wiadomości od innych */
+.message.On {
+  background-color: #f2f2f2;
+  padding: 10px;
+  margin: 10px 0;
+  border-radius: 5px;
+  position: relative;
+}
+
+.message.On::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: -10px;
+  border: 10px solid transparent;
+  border-right-color: #f2f2f2;
+}
+
+/* Styl dla powiadomień */
+.notification {
+  background-color: #ffffcc;
+  padding: 10px;
+  margin: 10px 0;
+  border-radius: 5px;
+}
+
+/* Styl dla daty wiadomości */
+.date {
+  font-size: 0.8em;
+  color: #666;
+  display: block;
+  margin-top: 5px;
+}
+a{
+  background-color: #48d4f4;
+  color: white;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  width: 100%;
+  margin-top: 10px;
+  text-decoration: none;
+  padding: 10px 20px;
+
+}

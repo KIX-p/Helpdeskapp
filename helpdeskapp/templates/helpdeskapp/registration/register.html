@@ -1,14 +1,18 @@
 {%load static %}
+<DOCTYPE html>
 <head>
     <title>{% block title %} {% endblock %}</title>
     <link href="{% static 'helpdeskapp/auth.css' %}" rel="stylesheet">
 </head>
+   
+<body>
+<div class="alertwarningtext">
+    {% for message in messages %}
+            {{ message }}
+    {% endfor %}
+</div>
+
 {% block content %}
-{% for message in messages %}
-    <div class="alert alert-{{ message.tags }}">
-        {{ message }}
-    </div>
-{% endfor %}
 <div class="login-container">
     <div class="welcome-text">
         <h1>Welcome To HelpDesk</h1>
@@ -25,3 +29,4 @@
     </div>
 </div>
 {% endblock %}
+</body>

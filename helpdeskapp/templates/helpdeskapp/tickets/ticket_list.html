@@ -5,16 +5,8 @@
 <head>
     <link href="{% static 'helpdeskapp/main.css' %}" rel="stylesheet">
 </head>
-
-
-{% for message in messages %}
-    <div class="alert alert-{{ message.tags }}">
-        {{ message }}
-    </div>
-
-    
-{% endfor %}
 <a href="{% url 'helpdeskapp:ticket_add' %}" class = "add">Stwórz nowe zgłoszenie</a>
+
 <div class="tickets">
     <div class="container">
         {% for ticket in tickets%}

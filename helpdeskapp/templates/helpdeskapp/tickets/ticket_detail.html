@@ -1,18 +1,17 @@
-
 {%load static %}
-
-
+<DOCTYPE html>
 <head>
     <link href="{% static 'helpdeskapp/detail.css' %}" rel="stylesheet">
-    
 </head>
+<body>
+
+    {% for message in messages %}
+        <div class="alertwarning">
+            {{ message }}
+        </div>
+    {% endfor %}
 
 {% block content %}
-{% for message in messages %}
-    <div class="alert alert-{{ message.tags }}">
-        {{ message }}
-    </div>
-{% endfor %}
 <div class="container">
     <div class="help-card">
         <h1>Tytuł: {{ticket.title}}</h1>
@@ -37,3 +36,4 @@
 
 </div>
 {% endblock %}
+</body>

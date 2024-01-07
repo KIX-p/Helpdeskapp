@@ -20,6 +20,7 @@ body {
     border: 1px solid rgba(255, 255, 255, 0.18);
     box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.37);
     margin: 20px;
+    flex-wrap:wrap;
 }
 
 h1 {
@@ -66,10 +67,35 @@ a {
     cursor: pointer;
     width: 100%;
     text-decoration: none;
+    flex-wrap:wrap;
 }
 
 a:hover {
     background-color: #45a049;
+}
+.alertwarning{
+    background-color: #bfae3b;
+    color: white;
+    padding: 10px;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    width: 100%;
+    margin-top: 10px;
+    transition: background-color 0.3s ease;
+}
+
+.alertsuccess{
+    background-color: #405840;
+    color: white;
+    padding: 10px;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    width: 100%;
+    margin-top: 10px;
+    transition: background-color 0.3s ease;
+
 }
 
 

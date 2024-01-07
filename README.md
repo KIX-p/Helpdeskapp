@@ -9,3 +9,4 @@ Na podstawie wymagań klienta zrobiliśmy prostą i podstawową aplikację webow
         o	Defaultuser
             	Widzi tylko swoje stworzone tickety
 Niestety nie udało się zrobić rozwiniętego chatu oraz dodać bardziej zaawansowanych funkcji takich jak na przykład dashboardy, dodanie zdjęć itd. 
+	

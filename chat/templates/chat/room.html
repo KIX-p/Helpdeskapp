@@ -1,8 +1,6 @@
+{%load static%}
 <head>
-  <link
-    rel="stylesheet"
-    href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/css/bootstrap.min.css"
-  />
+  <link href="{% static 'helpdeskapp/main.css' %}" rel="stylesheet">
 </head>
 {% block extra_js %} {%endblock%}
 {% block title %}Pokój czatu dla "{{ ticket.title }}"{% endblock %} 

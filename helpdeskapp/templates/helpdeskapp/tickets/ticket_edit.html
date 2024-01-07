@@ -1,10 +1,19 @@
-{% extends 'helpdeskapp/base.html' %}
+
 {%load static %}
 {% block content %}
+
+<head>
+  <link href="{% static 'helpdeskapp/detail.css' %}" rel="stylesheet">
+</head>
+
+<div class="container">
   <h2>Edit ticket</h2>
   <form action = "" method="POST">
     {% csrf_token %}
-    {{ form.as_p }}
-    <button type="submit">Zapisz Dane</button>
+    <div class="help-card">
+      {{ form.as_p }}
+    </div>
+    <button type="submit" class="submit">Zapisz Dane</button>
   </form>
+</div>
 {% endblock %}

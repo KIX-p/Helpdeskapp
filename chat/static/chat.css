@@ -1,0 +1,54 @@
+#chat {
+    max-height: 300px;
+    overflow-y: scroll;
+    border: 1px solid #ccc;
+    padding: 10px;
+    margin-bottom: 20px;
+  }
+  
+  .message {
+    margin-bottom: 10px;
+    padding: 10px;
+    border-radius: 5px;
+  }
+  
+  .message strong {
+    color: #007bff; /* колір для імені користувача */
+  }
+  
+  .message.Ja {
+    background-color: #007bff; /* колір для ваших повідомлень */
+    color: #fff; /* колір тексту для ваших повідомлень */
+  }
+  
+  .message.On {
+    background-color: #f0f0f0; /* колір для повідомлень інших користувачів */
+  }
+  
+  #chat-input {
+    margin-top: 20px;
+  }
+  
+  #chat-message-input {
+    width: 70%;
+    padding: 8px;
+  }
+  
+  #chat-message-submit {
+    width: 28%;
+    padding: 8px;
+    margin-left: 2%;
+  }
+  
+  .notification {
+    background-color: #f8f9fa; /* колір фону повідомлень у сповіщеннях */
+    border: 1px solid #ccc;
+    margin-bottom: 10px;
+    padding: 10px;
+    border-radius: 5px;
+  }
+  
+  .date {
+    color: #6c757d; /* колір тексту для дати */
+  }
+  

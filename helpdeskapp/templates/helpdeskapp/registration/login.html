@@ -1,22 +1,33 @@
-{%load static%}
+{% load static %}
 <head>
-    <title>{% block title %} {% endblock %}</title>
-    <link href="{% static 'helpdeskapp/static/style.css' %}" rel="stylesheet">
-    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/css/bootstrap.min.css">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{% block title %}Login{% endblock %}</title>
+    <link href="{% static 'helpdeskapp/auth.css' %}" rel="stylesheet">
+    
 </head>
-    {% block content %}
-    {% for message in messages %}
-    <div class="alert alert-{{ message.tags }}">
-        {{ message }}
+
+<div class="login-container">
+    <div class="welcome-text">
+        <h1>Welcome To HelpDesk</h1>
+        <p> <a href="{% url 'helpdeskapp:register' %}">Nie masz konta?</a></p>
     </div>
-{% endfor %}
-        <h1>Logowanie</h1>
-        <p>Wypełnij poniższy formularz, aby się zalogować:</p>
-        <p>nie masz konta? <a href="{% url 'helpdeskapp:register' %}">Zarejestruj się</a></p>
-        {% if error_message %}<p><strong>{{ error_message }}</strong></p>{% endif %}
-    <form action="." method="post">
-        {{ form.as_p }}
-        {% csrf_token %}
-        <p><input type="submit" value="Zaloguj"></p>
-    </form>
-    {% endblock %}
+    <div class="form-container">
+        {% block content %}
+            {% for message in messages %}
+                <div class="alert alert-{{ message.tags }}">
+                    {{ message }}
+                </div>
+            {% endfor %}
+            <h1>Logowanie</h1>
+            <p>Wypełnij poniższy formularz, aby się zalogować:</p>
+            {% if error_message %}<p><strong>{{ error_message }}</strong></p>{% endif %}
+            <form action="." method="post">
+                {{ form.as_p }}
+                {% csrf_token %}
+                <p><input type="submit" value="Zaloguj" class="submit"></p>
+            </form>
+        {% endblock %}
+    </div>
+</div>
+

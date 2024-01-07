@@ -3,21 +3,29 @@
 <html lang="pl">
 <head>
     <title>{% block title %} {% endblock %}</title>
-    <link href="{% static 'helpdeskapp/static/style.css' %}" rel="stylesheet">
-    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/css/bootstrap.min.css">
+    <link href="{% static 'helpdeskapp/main.css' %}" rel="stylesheet">
 </head>
 <body>
+    <div class="header">
+        <div class="left">
+            <h1>Witaj w systemie Tickety</h1>
+        </div>
+        <div class="right">
+            <span class = "user">
+                {%if request.user.is_authenticated%}
+                    Witaj {{request.user.username}}!
+                    <br>
+                    Użytkownik: {{request.user.groups.all.0}}
+                    <a href="{% url 'helpdeskapp:logout' %}">Wyloguj</a>
+                {%else%}
+                    <a href="{% url 'helpdeskapp:login' %}">Zaloguj</a>
+                {%endif%}
+            </span>
+        </div>
+    </div>
+
     {%if request.user.is_authenticated%}
-    <span class = "user">
-        {%if request.user.is_authenticated%}
-            Witaj {{request.user.username}}!
-            <br>
-            Użytkownik: {{request.user.groups.all.0}}
-            <a href="{% url 'helpdeskapp:logout' %}">Wyloguj</a>
-        {%else%}
-            <a href="{% url 'helpdeskapp:login' %}">Zaloguj</a>
-        {%endif%}
-    </span>
+    
     <div class="container">
         <div class="content">
             {% block content %} 

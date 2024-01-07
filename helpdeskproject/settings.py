@@ -36,8 +36,14 @@ INSTALLED_APPS = [
     'django.contrib.contenttypes',
     'django.contrib.sessions',
     'django.contrib.messages',
+    'channels',
+    'daphne' , # Channels
     'django.contrib.staticfiles',
     'helpdeskapp.apps.HelpdeskappConfig',
+    'chat.apps.ChatConfig',
+    
+    
+    
 ]
 
 MIDDLEWARE = [
@@ -68,6 +74,8 @@ TEMPLATES = [
     },
 ]
 
+# Channels
+ASGI_APPLICATION = 'helpdeskproject.routing.application'
 WSGI_APPLICATION = 'helpdeskproject.wsgi.application'
 
 
@@ -100,6 +108,14 @@ AUTH_PASSWORD_VALIDATORS = [
     },
 ]
 
+CHANNEL_LAYERS = {
+    'default': {
+        'BACKEND': 'channels_redis.core.RedisChannelLayer',
+        'CONFIG': {
+            "hosts": [('127.0.0.1', 6379)],
+        },
+    },
+}
 
 # Internationalization
 # https://docs.djangoproject.com/en/4.2/topics/i18n/
@@ -126,3 +142,5 @@ DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 LOGIN_REDIRECT_URL = 'ticket_list'
 LOGIN_URL = 'login'
 LOGOUT_URL = 'logout'
+
+

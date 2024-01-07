@@ -4,10 +4,10 @@
     href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/css/bootstrap.min.css"
   />
 </head>
-{% block title %}Pokój czatu dla "{{ ticket.title }}"{% endblock %} {% block
-extra_js %}
+{% block extra_js %} {%endblock%}
+{% block title %}Pokój czatu dla "{{ ticket.title }}"{% endblock %} 
+
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
-{% endblock %} {% block content %}
 <div id="chat">
   <div id="notifications"></div>
 </div>
@@ -22,7 +22,7 @@ extra_js %}
     >
   </p>
 </div>
-{% endblock %} {% block domready %}
+{% block domready %}
 <script>
   var url = "ws://" + window.location.host + "/ticket/detail/{{ slug }}/chat/";
   var chatSocket = new WebSocket(url);

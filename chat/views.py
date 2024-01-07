@@ -3,11 +3,8 @@ from django.forms import SlugField
 from django.http import HttpResponse, JsonResponse
 from django.shortcuts import redirect, render, get_object_or_404
 from django.contrib.auth.decorators import login_required
-
 from django.contrib.auth.models import User
 from django.contrib import messages
-
-
 from helpdeskapp.models import Ticket
 
 

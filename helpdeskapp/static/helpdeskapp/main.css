@@ -23,6 +23,8 @@ header {
     background-color: rgba(255, 255, 255, 0.18);
     box-sizing: border-box;
     z-index: 1000;
+    height: 100px;
+    margin-bottom: 20px;
 }
 
 
@@ -36,6 +38,7 @@ header {
     border: 1px solid rgba(255, 255, 255, 0.18);
     box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.37);
     margin: 20px;
+    margin-top:20%;
     color: #fff;
     transition: background-color 0.3s ease;
 }
@@ -43,37 +46,6 @@ header {
 .card:hover{
     background-color: rgba(255, 255, 255, 0.18);
 }
-
-a.add {
-    display: inline-block;
-    padding: 10px 20px;
-    background-color: #4CAF50;
-    color: #fff;
-    text-decoration: none;
-    border-radius: 5px;
-    transition: background-color 0.3s ease;
-}
-
-a.add:hover {
-    background-color: #45a049;
-}
-
-.add{
-    padding: 10px;
-    border: none;
-    border-radius: 5px;
-    cursor: pointer;
-    width: 100%;
-    margin-top: 10px;
-    background-color: #4CAF50;
-    color: #fff;
-    transition: background-color 0.3s ease;
-}
-
-.add:hover{
-    background-color: #45a049;
-}
-
 .container{
     display: flex;
     flex-wrap: wrap;
@@ -132,20 +104,24 @@ a{
     margin-left: 65%;
 }
 
-.add{
-    margin: 10px;
-    background-color: #4CAF50;
-    color: white;
-    padding: 10px;
-    border: none;
-    border-radius: 5px;
-    cursor: pointer;
-    width: 100%;
-    margin-top: 10px;
+p.add {
+    text-align: center; /* Center the text */
 }
 
-.add:hover{
+p.add a {
+    display: inline-block; /* Needed for centering inline elements */
+    padding: 10px 5px;
+    text-decoration: none;
+    color: #fff;
+    background-color: #4CAF50;
+    border-radius: 5px;
+    transition: background-color 0.3s ease, transform 0.3s ease; /* Add transition for transform */
+    font-size: 1em; /* Increase the font size */
+}
+
+p.add a:hover {
     background-color: #45a049;
+    transform: scale(1.05); /* Make the link slightly larger when hovered */
 }
 
 .container{

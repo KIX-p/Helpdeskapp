@@ -5,11 +5,12 @@
 <head>
     <link href="{% static 'helpdeskapp/main.css' %}" rel="stylesheet">
 </head>
-<a href="{% url 'helpdeskapp:ticket_add' %}" class = "add">Stwórz nowe zgłoszenie</a>
 
 <div class="tickets">
     <div class="container">
+        
         {% for ticket in tickets%}
+
         <a href="{{ticket.get_absolute_url}}">
         <div class="card">
 
@@ -25,4 +26,5 @@
     </div>
     {%include "helpdeskapp/pagination.html" with page=tickets %}
 </div>
+
 {% endblock %}

@@ -7,14 +7,21 @@
 </head>
 <body>
     <header>
+        
         <div class="left">
+            
             <h1>Witaj w systemie Tickety</h1>
             {% for message in messages %}
                 <div class="alertsuccess">
                     {{ message }}
                 </div>
+                
             {% endfor %}
+            
         </div>
+        <p class="add">
+            <a href="{% url 'helpdeskapp:ticket_add' %}">Stwórz nowe zgłoszenie</a>
+        </p>
         <div class="right">
             <span class = "user">
                 {%if request.user.is_authenticated%}
@@ -24,6 +31,7 @@
                     <a href="{% url 'helpdeskapp:login' %}">Zaloguj</a>
                 {%endif%}
             </span>
+           
         </div>
     </header>
 

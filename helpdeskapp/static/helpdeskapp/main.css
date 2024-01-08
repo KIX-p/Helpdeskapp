@@ -1,13 +1,89 @@
-body{
-    font-family: sans-serif;
+body {
+    font-family: 'Helvetica Neue', sans-serif;
+    display: flex;
     align-items: center;
     justify-content: center;
     background-color: #424040;
     color: #fff;
-    float: left;
     margin: 0;
+    padding: 0;
+    height: 100vh;
+    box-sizing: border-box;
 }
-.header{
+
+header {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 20px;
+    background-color: rgba(255, 255, 255, 0.18);
+    box-sizing: border-box;
+    z-index: 1000;
+}
+
+
+.card{
+    padding: 20px;
+    width: 400px;
+    background: linear-gradient(135deg, rgba(255, 255, 255, 0.1), rgba(255, 255, 255, 0));
+    backdrop-filter: blur(10px);
+    -webkit-backdrop-filter: blur(10px);
+    border-radius: 20px;
+    border: 1px solid rgba(255, 255, 255, 0.18);
+    box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.37);
+    margin: 20px;
+    color: #fff;
+    transition: background-color 0.3s ease;
+}
+
+.card:hover{
+    background-color: rgba(255, 255, 255, 0.18);
+}
+
+a.add {
+    display: inline-block;
+    padding: 10px 20px;
+    background-color: #4CAF50;
+    color: #fff;
+    text-decoration: none;
+    border-radius: 5px;
+    transition: background-color 0.3s ease;
+}
+
+a.add:hover {
+    background-color: #45a049;
+}
+
+.add{
+    padding: 10px;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    width: 100%;
+    margin-top: 10px;
+    background-color: #4CAF50;
+    color: #fff;
+    transition: background-color 0.3s ease;
+}
+
+.add:hover{
+    background-color: #45a049;
+}
+
+.container{
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    align-items: center;
+    margin: 0;
+    padding: 0;
+}
+
+.user {
     display: flex;
     flex-wrap: wrap;
     justify-content: center;
@@ -16,8 +92,22 @@ body{
     padding: 0;
     margin-top: 10px;
     margin-bottom: 10px;
-    background-color: rgba(255, 255, 255, 0.18);
-    
+}
+
+.alertsuccess{
+    background-color: #405840;
+    color: white;
+    padding: 10px;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    width: 100%;
+    margin-top: 10px;
+    transition: background-color 0.3s ease;
+}
+
+.alertsuccess:hover{
+    background-color: #3d6a3d;
 }
 .card{
     padding: 20px;

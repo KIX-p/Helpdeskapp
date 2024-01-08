@@ -44,6 +44,10 @@ select, textarea, input[type="text"] {
     
 }
 
+option {
+    color: #424040;
+}
+
 .submit {
     background-color: #4CAF50;
     color: white;

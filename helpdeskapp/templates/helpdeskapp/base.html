@@ -19,9 +19,6 @@
             {% endfor %}
             
         </div>
-        <p class="add">
-            <a href="{% url 'helpdeskapp:ticket_add' %}">Stwórz nowe zgłoszenie</a>
-        </p>
         <div class="right">
             <span class = "user">
                 {%if request.user.is_authenticated%}
@@ -40,7 +37,7 @@
     <div class="container">
         <div class="content">
             {% block content %} 
-                
+            
             {% endblock %}
         </div>
     </div>

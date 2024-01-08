@@ -15,9 +15,8 @@ body {
     margin: 20px;
     margin-left: 30px;
     overflow-y: scroll;
-    max-height: 800px;
+    max-height: 100vh;
 }
-
 h1{
   color: #fff;
   font-size: 20px;

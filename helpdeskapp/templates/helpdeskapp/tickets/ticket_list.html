@@ -5,10 +5,16 @@
 <head>
     <link href="{% static 'helpdeskapp/main.css' %}" rel="stylesheet">
 </head>
-
+<header>
+    
+</header>
+<p class="add">
+    <a href="{% url 'helpdeskapp:ticket_add' %}">Stwórz nowe zgłoszenie</a>
+</p>
 <div class="tickets">
+    
     <div class="container">
-        
+       
         {% for ticket in tickets%}
 
         <a href="{{ticket.get_absolute_url}}">

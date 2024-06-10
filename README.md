@@ -1,12 +1,5 @@
-Na podstawie wymagań klienta zrobiliśmy prostą i podstawową aplikację webową Helpdesk. Funkcjonalność aplikacji ma za zadanie umożliwić zgłaszanie oraz reagowanie na napotkane problemy oraz błędy.
-	Co posiada dana aplikacja:
-    •	Logowanie i rejestracja użytkownika
-    •	Każde zgłoszenie ma status: oczekujące, w trakcie, rozwiązane
-    •	Dane zgłoszenia (tickety) są posortowane według czasu 
-    •	Podzielenie użytkowników na:
-        o	ITuser
-            	Widzi tickety przypisanych do siebie i nie przypisanych do nikogo
-        o	Defaultuser
-            	Widzi tylko swoje stworzone tickety
-Niestety nie udało się zrobić rozwiniętego chatu oraz dodać bardziej zaawansowanych funkcji takich jak na przykład dashboardy, dodanie zdjęć itd. 
-	
+Projekt Helpdesk: Na podstawie wymagań klienta stworzyłem prostą i podstawową aplikację webową Helpdesk. Aplikacja została zaprojektowana, aby umożliwić zgłaszanie problemów oraz błędów, a także reagowanie na nie w systematyczny sposób. Główne funkcjonalności aplikacji obejmują możliwość logowania i rejestracji użytkowników, co umożliwia im dostęp do systemu zgłoszeń. Każde zgłoszenie (ticket) ma przypisany status: oczekujące, w trakcie, rozwiązane, co pomaga w monitorowaniu jego postępu. Zgłoszenia są również sortowane według czasu, aby ułatwić ich przeglądanie i zarządzanie.
+
+Aplikacja oferuje także podział użytkowników na dwie role: ITuser oraz DefaultUser. ITuser ma dostęp do wszystkich zgłoszeń, zarówno tych przypisanych do siebie, jak i nieprzypisanych do nikogo, co pozwala na kompleksowe zarządzanie problemami. Z kolei DefaultUser widzi jedynie swoje własne zgłoszenia oraz ma dostęp do podstawowego chatu, co umożliwia mu komunikację w sprawach zgłoszeń.
+
+Niestety, nie udało się zaimplementować bardziej zaawansowanych funkcji, takich jak rozbudowany chat, dashboardy do monitorowania danych czy możliwość dodawania zdjęć. Mimo to, aplikacja spełnia podstawowe potrzeby w zakresie zarządzania zgłoszeniami i jest solidnym fundamentem do dalszego rozwoju.
